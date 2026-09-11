@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2025 Annual Report — NovaCraft AI</title>
+<style>
+  :root{
+    --bg:#0b0b0f;
+    --bg-2:#0f0f15;
+    --panel:#15151c;
+    --panel-2:#1b1b24;
+    --border:#26262f;
+    --border-soft:rgba(255,255,255,0.06);
+    --text:#f4f4f7;
+    --muted:#9696a3;
+    --faint:#6b6b78;
+    --accent:#7c5cff;
+    --accent-2:#5b8def;
+    --teal:#2dd4bf;
+    --amber:#f59e0b;
+    --pink:#f472b6;
+    --green:#34d399;
+    --radius:14px;
+    --mono:"SF Mono","JetBrains Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,0.035) 1px, transparent 0);
+    background-size:30px 30px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+  body::after{
+    content:"";
+    position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+    width:900px;height:600px;z-index:0;pointer-events:none;
+    background:radial-gradient(circle, rgba(124,92,255,0.16), transparent 60%);
+    filter:blur(40px);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* progress bar */
+  #progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:100;transition:width .1s linear}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(11,11,15,0.72);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.02em}
+  .brand .logo{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center}
+  .brand .logo svg{width:14px;height:14px}
+  .nav-links{display:flex;gap:4px}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:8px;transition:color .2s,background .2s}
+  .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+  .pill{font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid rgba(124,92,255,0.3);background:rgba(124,92,255,0.08);padding:5px 11px;border-radius:999px}
+  @media(max-width:720px){.nav-links{display:none}}
+
+  /* hero */
+  .hero{padding:120px 0 80px;position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;margin-bottom:22px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(52,211,153,0.15);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .hero h1{
+    font-size:clamp(44px,8vw,86px);
+    line-height:1.02;
+    letter-spacing:-.035em;
+    font-weight:750;
+    margin-bottom:24px;
+  }
+  .hero h1 .accent{color:var(--accent)}
+  .hero p.sub{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:620px;margin-bottom:36px}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;font-size:14.5px;font-weight:550;text-decoration:none;transition:transform .15s,background .2s,border-color .2s}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#6b4dff;transform:translateY(-1px)}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,0.02)}
+  .btn-ghost:hover{border-color:var(--faint);background:rgba(255,255,255,0.05)}
+
+  /* section */
+  section{padding:70px 0;position:relative}
+  .sec-head{margin-bottom:42px}
+  .sec-label{font-family:var(--mono);font-size:12.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:10px}
+  .sec-head h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;font-weight:700;margin-bottom:10px}
+  .sec-head p{color:var(--muted);font-size:15.5px;max-width:560px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i,0)*90ms)}
+  .reveal.in-view{opacity:1;transform:none}
+
+  /* metric cards */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.metrics{grid-template-columns:1fr}}
+  .mcard{
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));
+    border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 22px 18px;position:relative;overflow:hidden;
+    transition:border-color .3s,transform .3s;
+  }
+  .mcard:hover{border-color:rgba(124,92,255,0.4);transform:translateY(-3px)}
+  .mcard .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .mcard .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(124,92,255,0.12);border:1px solid rgba(124,92,255,0.2)}
+  .mcard .ic svg{width:19px;height:19px;stroke:var(--accent)}
+  .delta{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--green);background:rgba(52,211,153,0.1);padding:4px 9px;border-radius:999px}
+  .mcard .num{font-family:var(--mono);font-size:clamp(30px,4vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1}
+  .mcard .lbl{color:var(--muted);font-size:13.5px;margin-top:8px}
+  .spark{margin-top:16px;height:34px;width:100%}
+  .spark path{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  /* chart panel */
+  .panel{background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--border);border-radius:18px;padding:26px}
+  .chart-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:10px}
+  .chart-head .legend-inline{display:flex;gap:16px;font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+  .chart-wrap{position:relative;width:100%}
+  svg.linechart{width:100%;height:auto;display:block;overflow:visible}
+  .grid-line{stroke:var(--border-soft);stroke-width:1}
+  .axis-label{fill:var(--faint);font-size:12px;font-family:var(--mono)}
+  .area-fill{opacity:0;transition:opacity 1s ease .3s}
+  .area-fill.in-view{opacity:1}
+  .line-path{fill:none;stroke:url(#lineGrad);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .pt{fill:var(--bg);stroke:var(--accent);stroke-width:2.5;opacity:0;transition:opacity .4s}
+  .pt.in-view{opacity:1}
+  .guide{stroke:rgba(255,255,255,0.18);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+  .tip{position:absolute;pointer-events:none;transform:translate(-50%,-130%);background:#22222c;border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-size:12.5px;white-space:nowrap;opacity:0;transition:opacity .15s;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .tip .t-month{color:var(--faint);font-family:var(--mono);font-size:11px}
+  .tip .t-val{font-family:var(--mono);font-weight:700;color:var(--text)}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--accent),rgba(124,92,255,0.05))}
+  .tl-item{position:relative;padding:0 0 34px 12px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item .node{position:absolute;left:-34px;top:4px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);display:grid;place-items:center}
+  .tl-item .node::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .tl-q{display:inline-block;font-family:var(--mono);font-size:11.5px;color:var(--accent);background:rgba(124,92,255,0.1);padding:3px 9px;border-radius:6px;margin-bottom:8px}
+  .tl-item h4{font-size:18px;font-weight:650;letter-spacing:-.01em;margin-bottom:6px}
+  .tl-item p{color:var(--muted);font-size:14.5px;max-width:640px}
+
+  /* donut + legend */
+  .donut-grid{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+  @media(max-width:760px){.donut-grid{grid-template-columns:1fr;gap:24px}}
+  .donut-box{position:relative;width:260px;height:260px;margin:0 auto}
+  .donut-box svg{width:100%;height:100%;transform:rotate(0)}
+  .donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .donut-center .big{font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:-.02em}
+  .donut-center .small{color:var(--muted);font-size:12.5px;font-family:var(--mono);margin-top:2px}
+  .legend{display:flex;flex-direction:column;gap:4px}
+  .legend-row{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--border-soft)}
+  .legend-row:last-child{border-bottom:none}
+  .legend-row .sw{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+  .legend-row .name{font-size:14.5px;flex:1}
+  .legend-row .pct{font-family:var(--mono);font-weight:600;font-size:15px}
+
+  /* team */
+  .team{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:760px){.team{grid-template-columns:1fr}}
+  .tcard{background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .3s,transform .3s}
+  .tcard:hover{border-color:rgba(124,92,255,0.35);transform:translateY(-3px)}
+  .tcard .th{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .tcard .tic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:rgba(124,92,255,0.1);border:1px solid rgba(124,92,255,0.18)}
+  .tcard .tic svg{width:21px;height:21px;stroke:var(--accent)}
+  .tcard .tname{font-size:16px;font-weight:650}
+  .tcard .tstat{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+  .tcard .tstat span{font-size:14px;color:var(--muted);font-weight:500}
+  .tcard ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .tcard li{font-size:13.5px;color:var(--muted);padding-left:18px;position:relative}
+  .tcard li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* outlook */
+  .outlook{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.outlook{grid-template-columns:1fr}}
+  .ocard{background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--border);border-radius:var(--radius);padding:26px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+  .ocard:hover{border-color:rgba(124,92,255,0.35);transform:translateY(-3px)}
+  .ocard .idx{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:18px;letter-spacing:.05em}
+  .ocard h4{font-size:20px;font-weight:680;letter-spacing:-.02em;margin-bottom:12px}
+  .ocard p{color:var(--muted);font-size:14.5px}
+  .ocard .glow{position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,92,255,0.18),transparent 70%);filter:blur(10px)}
+
+  footer{border-top:1px solid var(--border-soft);padding:40px 0 60px;margin-top:40px;color:var(--faint);font-size:13px}
+  footer .frow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  footer .fbrand{font-weight:650;color:var(--muted)}
+
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1!important;transform:none!important;transition:none}
+    html{scroll-behavior:auto}
+    .eyebrow .dot{animation:none}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand">
+      <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+      NovaCraft
+    </div>
+    <div class="nav-links">
+      <a href="#metrics">Metrics</a>
+      <a href="#growth">Growth</a>
+      <a href="#milestones">Milestones</a>
+      <a href="#usage">Usage</a>
+      <a href="#team">Team</a>
+      <a href="#outlook">2026</a>
+    </div>
+    <span class="pill">FY 2025</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal"><span class="dot"></span>Annual Report · Fiscal Year 2025</span>
+    <h1 class="reveal" style="--i:1">2025 <span class="accent">Annual Report</span></h1>
+    <p class="sub reveal" style="--i:2">Empowering 100K+ developers with AI. A year of relentless shipping — 47 features launched, 156% user growth, and a platform rebuilt from the ground up.</p>
+    <div class="cta-row reveal" style="--i:3">
+      <a href="#metrics" class="btn btn-primary">View the numbers
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#outlook" class="btn btn-ghost">Looking ahead →</a>
+    </div>
+  </div>
+</header>
+
+<!-- METRICS -->
+<section id="metrics">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">Key Metrics</span>
+      <h2>Our growth at a glance</h2>
+      <p>The numbers that tell the story of 2025.</p>
+    </div>
+    <div class="metrics">
+      <div class="mcard reveal" style="--i:0">
+        <div class="top">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="delta">+156%</span>
+        </div>
+        <div class="num" data-count="128400" data-dec="0">0</div>
+        <div class="lbl">Total Users</div>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none"><path d="M0 30 L20 26 L40 27 L60 18 L80 14 L100 7 L120 3"/></svg>
+      </div>
+      <div class="mcard reveal" style="--i:1">
+        <div class="top">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6M12 19h8"/></svg></span>
+          <span class="delta">+320%</span>
+        </div>
+        <div class="num" data-count="2.4" data-dec="1" data-suffix="B">0</div>
+        <div class="lbl">API Calls</div>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none"><path d="M0 28 L20 24 L40 22 L60 16 L80 12 L100 8 L120 2"/></svg>
+      </div>
+      <div class="mcard reveal" style="--i:2">
+        <div class="top">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+          <span class="delta">SLA met</span>
+        </div>
+        <div class="num" data-count="99.98" data-dec="2" data-suffix="%">0</div>
+        <div class="lbl">Uptime</div>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none"><path d="M0 18 L20 16 L40 17 L60 12 L80 13 L100 8 L120 6"/></svg>
+      </div>
+      <div class="mcard reveal" style="--i:3">
+        <div class="top">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.4 1 6.7L12 17l-5.5 3 1-6.7L3 8.9 9 8z"/></svg></span>
+          <span class="delta">Top 10%</span>
+        </div>
+        <div class="num" data-count="72" data-dec="0">0</div>
+        <div class="lbl">NPS Score</div>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none"><path d="M0 26 L20 24 L40 20 L60 18 L80 12 L100 9 L120 4"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH -->
+<section id="growth">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">User Growth</span>
+      <h2>Monthly active users</h2>
+      <p>A trajectory we're proud of — crossing 100K in Q3 and closing the year at 128K.</p>
+    </div>
+    <div class="panel reveal">
+      <div class="chart-head">
+        <div>
+          <div style="font-family:var(--mono);font-size:13px;color:var(--muted)">Active developers · thousands</div>
+        </div>
+        <div class="legend-inline">
+          <span>● MAU</span><span>peak 128K</span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg class="linechart" id="lineChart" viewBox="0 0 820 380" preserveAspectRatio="xMidYMid meet" aria-label="User growth line chart"></svg>
+        <div class="tip" id="lineTip"><div class="t-month"></div><div class="t-val"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section id="milestones">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">Product Milestones</span>
+      <h2>A year of relentless shipping</h2>
+      <p>Quarter by quarter, the highlights that defined 2025.</p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- USAGE -->
+<section id="usage">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">Feature Usage</span>
+      <h2>Where developers spend their time</h2>
+      <p>Top features by share of total activity this year.</p>
+    </div>
+    <div class="panel reveal">
+      <div class="donut-grid">
+        <div class="donut-box">
+          <svg id="donut" viewBox="0 0 200 200"></svg>
+          <div class="donut-center">
+            <div class="big">Top 5</div>
+            <div class="small">features</div>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">Team Highlights</span>
+      <h2>Every department shipped big</h2>
+      <p>The people behind the numbers.</p>
+    </div>
+    <div class="team">
+      <div class="tcard reveal" style="--i:0">
+        <div class="th">
+          <span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5z"/></svg></span>
+          <span class="tname">Engineering</span>
+        </div>
+        <div class="tstat">47 <span>features shipped</span></div>
+        <ul>
+          <li>1,200+ PRs merged across 22 services</li>
+          <li>Zero P0 incidents in Q3–Q4</li>
+          <li>100% of services migrated to Kubernetes</li>
+        </ul>
+      </div>
+      <div class="tcard reveal" style="--i:1">
+        <div class="th">
+          <span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg></span>
+          <span class="tname">Product</span>
+        </div>
+        <div class="tstat">+22 <span>NPS points</span></div>
+        <ul>
+          <li>Launched 3 new product lines</li>
+          <li>User satisfaction up 50 → 72</li>
+          <li>Reduced churn by 34%</li>
+        </ul>
+      </div>
+      <div class="tcard reveal" style="--i:2">
+        <div class="th">
+          <span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="11.5" r="2.5"/><circle cx="17.5" cy="14.5" r="2.5"/><path d="M12 2a10 10 0 0 0 0 20 2.5 2.5 0 0 0 2-4 2.5 2.5 0 0 1 2-4h1.5A4.5 4.5 0 0 0 22 9.5 10 10 0 0 0 12 2z"/></svg></span>
+          <span class="tname">Design</span>
+        </div>
+        <div class="tstat">2.0 <span>design system</span></div>
+        <ul>
+          <li>Unified component library, 180+ tokens</li>
+          <li>Design-to-dev handoff time −60%</li>
+          <li>Accessibility coverage at 98%</li>
+        </ul>
+      </div>
+      <div class="tcard reveal" style="--i:3">
+        <div class="th">
+          <span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>
+          <span class="tname">Growth &amp; Ops</span>
+        </div>
+        <div class="tstat">156% <span>user growth</span></div>
+        <ul>
+          <li>Organic acquisition up 4×</li>
+          <li>Community events reached 15K devs</li>
+          <li>Live in 8 countries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTLOOK -->
+<section id="outlook">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-label">Looking Ahead — 2026</span>
+      <h2>Three strategic bets</h2>
+      <p>The directions shaping our next chapter.</p>
+    </div>
+    <div class="outlook">
+      <div class="ocard reveal" style="--i:0">
+        <div class="glow"></div>
+        <div class="idx">01</div>
+        <h4>Multi-Modal AI Engine</h4>
+        <p>Beyond code — supporting design, documentation, and testing in one unified AI layer for the entire developer workflow.</p>
+      </div>
+      <div class="ocard reveal" style="--i:1">
+        <div class="glow"></div>
+        <div class="idx">02</div>
+        <h4>Global-First Infrastructure</h4>
+        <p>Targeting sub-50ms latency in 30+ regions, with sovereign AI deployments via new cloud-provider partnerships.</p>
+      </div>
+      <div class="ocard reveal" style="--i:2">
+        <div class="glow"></div>
+        <div class="idx">03</div>
+        <h4>Community-Led Growth</h4>
+        <p>Open-sourcing our plugin SDK and launching a $2M developer fund to support ecosystem builders and champions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap frow">
+    <span class="fbrand">NovaCraft AI</span>
+    <span>2025 Annual Report · Built for developers, by developers.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- progress bar ---------- */
+  var prog = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement;
+    var sc = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    prog.style.width = (sc*100) + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- generic reveal ---------- */
+  var revealIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in-view'); revealIO.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealIO.observe(el); });
+
+  /* ---------- count up ---------- */
+  function fmt(n, dec){
+    var s = n.toFixed(dec);
+    var parts = s.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  }
+  function countUp(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var dec = parseInt(el.getAttribute('data-dec')||'0', 10);
+    var suffix = el.getAttribute('data-suffix')||'';
+    if(reduce){ el.textContent = fmt(target, dec) + suffix; return; }
+    var dur = 1700, start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts-start)/dur, 1);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = fmt(target*eased, dec) + suffix;
+      if(p<1) requestAnimationFrame(step);
+      else el.textContent = fmt(target, dec) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var countIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); countIO.unobserve(e.target); } });
+  }, {threshold:0.5});
+  document.querySelectorAll('[data-count]').forEach(function(el){ countIO.observe(el); });
+
+  /* ---------- line chart ---------- */
+  var growth = [38,44,51,58,63,71,80,89,95,104,118,128];
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var W=820,H=380,padL=50,padR=28,padT=28,padB=46;
+  var plotW=W-padL-padR, plotH=H-padT-padB, maxV=140;
+  var xs = function(i){ return padL + i*(plotW/(growth.length-1)); };
+  var ys = function(v){ return padT + (1 - v/maxV)*plotH; };
+  var svg = document.getElementById('lineChart');
+  var NS='http://www.w3.org/2000/svg';
+  function mk(tag, attrs){ var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); return e; }
+
+  // gradient def
+  var defs = mk('defs',{});
+  defs.innerHTML =
+    '<linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">'+
+    '<stop offset="0%" stop-color="#7c5cff"/><stop offset="100%" stop-color="#5b8def"/></linearGradient>'+
+    '<linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="rgba(124,92,255,0.35)"/><stop offset="100%" stop-color="rgba(124,92,255,0)"/></linearGradient>';
+  svg.appendChild(defs);
+
+  // gridlines + y labels
+  [0,35,70,105,140].forEach(function(v){
+    var y = ys(v);
+    svg.appendChild(mk('line',{class:'grid-line',x1:padL,y1:y,x2:W-padR,y2:y}));
+    var t = mk('text',{class:'axis-label',x:padL-12,y:y+4,'text-anchor':'end'});
+    t.textContent = v;
+    svg.appendChild(t);
+  });
+  // x labels
+  months.forEach(function(m,i){
+    var t = mk('text',{class:'axis-label',x:xs(i),y:H-18,'text-anchor':'middle'});
+    t.textContent = m;
+    svg.appendChild(t);
+  });
+
+  // area + line
+  var linePts = growth.map(function(v,i){ return xs(i)+','+ys(v); }).join(' ');
+  var areaD = 'M'+xs(0)+','+(padT+plotH)+' L'+linePts.replace(/ /g,' L')+' L'+xs(growth.length-1)+','+(padT+plotH)+' Z';
+  var area = mk('path',{class:'area-fill',d:areaD,fill:'url(#areaGrad)'});
+  var line = mk('path',{class:'line-path',d:'M'+linePts.replace(/ /g,' L')});
+  svg.appendChild(area); svg.appendChild(line);
+
+  // points
+  var pts=[];
+  growth.forEach(function(v,i){
+    var c = mk('circle',{class:'pt',cx:xs(i),cy:ys(v),r:4});
+    svg.appendChild(c); pts.push(c);
+  });
+  // guide line
+  var guide = mk('line',{class:'guide',y1:padT,y2:padT+plotH});
+  svg.appendChild(guide);
+
+  // draw animation
+  function drawLine(){
+    var len = line.getTotalLength();
+    if(reduce){ line.style.strokeDasharray='none'; area.classList.add('in-view'); pts.forEach(function(p){p.classList.add('in-view');}); return; }
+    line.style.strokeDasharray = len;
+    line.style.strokeDashoffset = len;
+    line.getBoundingClientRect();
+    line.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1)';
+    line.style.strokeDashoffset = '0';
+    area.classList.add('in-view');
+    pts.forEach(function(p,i){ setTimeout(function(){ p.classList.add('in-view'); }, 900 + i*70); });
+  }
+  var lineIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ drawLine(); lineIO.unobserve(e.target); } });
+  }, {threshold:0.3});
+  lineIO.observe(svg);
+
+  // tooltip interaction
+  var tip = document.getElementById('lineTip');
+  svg.addEventListener('mousemove', function(e){
+    var rect = svg.getBoundingClientRect();
+    var scaleX = W/rect.width;
+    var mx = (e.clientX-rect.left)*scaleX;
+    var step = plotW/(growth.length-1);
+    var i = Math.round((mx-padL)/step);
+    i = Math.max(0, Math.min(growth.length-1, i));
+    var px = xs(i), py = ys(growth[i]);
+    guide.setAttribute('x1', px); guide.setAttribute('x2', px); guide.style.opacity='1';
+    tip.querySelector('.t-month').textContent = months[i]+' 2025';
+    tip.querySelector('.t-val').textContent = growth[i]+'K MAU';
+    tip.style.left = (px/W*100)+'%';
+    tip.style.top = (py/H*100)+'%';
+    tip.style.opacity='1';
+  });
+  svg.addEventListener('mouseleave', function(){ tip.style.opacity='0'; guide.style.opacity='0'; });
+
+  /* ---------- timeline ---------- */
+  var milestones = [
+    {q:'Q1 · January', t:'Platform 2.0 Launch', d:'Complete architecture overhaul with a 3× faster inference pipeline and a new plugin system.'},
+    {q:'Q1 · March', t:'Global CDN Expansion', d:'Deployed to 12 new edge regions, cutting p95 latency to under 80ms worldwide.'},
+    {q:'Q2 · April', t:'Enterprise Tier', d:'Launched a SOC 2 compliant enterprise plan with SSO, audit logs, and dedicated support.'},
+    {q:'Q2 · June', t:'AI Code Review', d:'Released an automated code-review agent — adopted by 40% of users within the first month.'},
+    {q:'Q3 · August', t:'100K Users Milestone', d:'Crossed 100,000 active developers — community contributions up 280%.'},
+    {q:'Q3 · September', t:'Marketplace Launch', d:'Developer marketplace opened with 200+ community plugins available at launch.'},
+    {q:'Q4 · October', t:'Series B Funding', d:'Raised $45M Series B to accelerate R&D and international expansion.'},
+    {q:'Q4 · December', t:'Platform 3.0 Preview', d:'Announced a next-gen multi-modal AI engine with live coding-collaboration features.'}
+  ];
+  var tl = document.getElementById('timeline');
+  milestones.forEach(function(m,i){
+    var item = document.createElement('div');
+    item.className='tl-item reveal';
+    item.style.setProperty('--i', i%4);
+    item.innerHTML = '<span class="node"></span>'+
+      '<span class="tl-q">'+m.q+'</span>'+
+      '<h4>'+m.t+'</h4>'+
+      '<p>'+m.d+'</p>';
+    tl.appendChild(item);
+    revealIO.observe(item);
+  });
+
+  /* ---------- donut ---------- */
+  var donutData = [
+    {n:'Code Completion', v:35, c:'#7c5cff'},
+    {n:'Code Review',     v:25, c:'#5b8def'},
+    {n:'Chat Assistant',   v:20, c:'#2dd4bf'},
+    {n:'Test Generation',  v:12, c:'#f59e0b'},
+    {n:'Documentation',    v:8,  c:'#f472b6'}
+  ];
+  var dsvg = document.getElementById('donut');
+  var R=70, CX=100, CY=100, SW=24, C=2*Math.PI*R;
+  var acc=0, segEls=[];
+  donutData.forEach(function(d,i){
+    var seg = C*d.v/100;
+    var c = mk('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:d.c,'stroke-width':SW,'stroke-linecap':'butt',transform:'rotate(-90 '+CX+' '+CY+')'});
+    c.setAttribute('stroke-dasharray', '0 '+C);
+    c.setAttribute('stroke-dashoffset', (-acc*C/100));
+    c.style.transition = 'stroke-dasharray 1.1s cubic-bezier(.16,1,.3,1) '+(i*0.12)+'s';
+    dsvg.appendChild(c);
+    segEls.push({el:c, seg:seg});
+    acc += d.v;
+  });
+  // center ring bg
+  var bg = mk('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:'rgba(255,255,255,0.05)','stroke-width':SW});
+  dsvg.insertBefore(bg, dsvg.firstChild);
+
+  function drawDonut(){
+    segEls.forEach(function(s){ s.el.setAttribute('stroke-dasharray', s.seg+' '+C); });
+  }
+  var donutIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ drawDonut(); donutIO.unobserve(e.target); } });
+  }, {threshold:0.4});
+  donutIO.observe(dsvg);
+
+  // legend
+  var legend = document.getElementById('legend');
+  donutData.forEach(function(d){
+    var row = document.createElement('div');
+    row.className='legend-row';
+    row.innerHTML = '<span class="sw" style="background:'+d.c+'"></span>'+
+      '<span class="name">'+d.n+'</span>'+
+      '<span class="pct" style="color:'+d.c+'">'+d.v+'%</span>';
+    legend.appendChild(row);
+  });
+
+})();
+</script>
+</body>
+</html>
